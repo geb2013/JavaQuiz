@@ -1,16 +1,19 @@
 package com.bryant.garrett.javaquiz;
 
+import android.support.annotation.StringRes;
+
 public class Question {
-    private String questionText;
+    @StringRes
+    private int  questionResource;
     private Boolean correctAnswer;
 
-    public Question(String question, Boolean answer) {
-        questionText = question;
+    Question(int question, Boolean answer) {
+        questionResource = question;
         correctAnswer = answer;
     }
 
-    public String getQuestionText() {
-        return questionText;
+    public int getQuestionText() {
+        return questionResource;
     }
 
     public Boolean getCorrectAnswer() {
