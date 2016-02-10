@@ -5,7 +5,7 @@
     <string name="question2">Windows is an operating system.</string>
     <string name="question3">Apple created Microsoft Office.</string>
     <string name="question4">Android is the name of any phone with a front-facing camera.</string>
-    
+
     <string name="correct_response">Correct!</string>
     <string name="wrong_response">Incorrect, try again.</string>
 </resources>
