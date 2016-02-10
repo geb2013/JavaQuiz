@@ -1,7 +1,6 @@
 package com.bryant.garrett.javaquiz;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class QuestionBank {
     private ArrayList<Question> allQuestions;
