@@ -2,8 +2,8 @@ package com.bryant.garrett.javaquiz;
 
 import java.util.ArrayList;
 
-public class QuestionBank {
-    private ArrayList<Question> allQuestions;
+class QuestionBank {
+    private final ArrayList<Question> allQuestions;
     private int currentQuestionIndex;
 
     QuestionBank() {

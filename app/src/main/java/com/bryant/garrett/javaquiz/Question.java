@@ -4,8 +4,8 @@ import android.support.annotation.StringRes;
 
 public class Question {
     @StringRes
-    private int  questionResource;
-    private Boolean correctAnswer;
+    private final int  questionResource;
+    private final Boolean correctAnswer;
 
     Question(int question, Boolean answer) {
         questionResource = question;
