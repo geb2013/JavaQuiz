@@ -2,6 +2,12 @@ package com.bryant.garrett.javaquiz;
 
 import java.util.ArrayList;
 
+/**
+ * Maintains a collection of Question objects.  The following methods can be used to navigate the
+ * collection: getNextQuestion and getPrevQuestion.
+ * @author Garrett
+ * @version 1.2
+ */
 class QuestionBank {
     private final ArrayList<Question> allQuestions;
     private int currentQuestionIndex;
