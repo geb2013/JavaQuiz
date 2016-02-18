@@ -1,5 +1,6 @@
 package com.bryant.garrett.javaquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private QuestionBank questionBank;
-    private String questionIndexKey = "questionIndex";
+    private static final String QUESTION_INDEX_KEY = "questionIndex";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +22,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Question startingQuestion;
-        if (savedInstanceState != null && savedInstanceState.getInt(questionIndexKey) > 0) {
+        if (savedInstanceState != null && savedInstanceState.getInt(QUESTION_INDEX_KEY) > 0) {
             // Re-init Question Bank
             questionBank = new QuestionBank();
-            startingQuestion = questionBank.getQuestionAt(savedInstanceState.getInt(questionIndexKey));
+            startingQuestion = questionBank.getQuestionAt(savedInstanceState.getInt(QUESTION_INDEX_KEY));
         } else {
             // Initialize Question Bank
             questionBank = new QuestionBank();
@@ -70,11 +71,11 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState() called");
 
-        outState.putInt(questionIndexKey, questionBank.getCurrentQuestionIndex());
+        outState.putInt(QUESTION_INDEX_KEY, questionBank.getCurrentQuestionIndex());
     }
 
     private void setNavigationListeners() {
-        // Set the true button response
+        // Set the previous button response
         Button mPrevButton = (Button) findViewById(R.id.prev_button);
         mPrevButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,14 +84,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Set the false button response
+        // Set the next button response
         Button mNextButton = (Button) findViewById(R.id.next_button);
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadQuestion(questionBank.getNextQuestion());
+                if (questionBank.onLastQuestion()) {
+                    loadFinishedActivity();
+                } else {
+                    loadQuestion(questionBank.getNextQuestion());
+                }
             }
         });
+    }
+
+    public void loadFinishedActivity() {
+        Log.d(TAG, "loadFinishedActivity() called");
+        Intent intent = new Intent(this, FinishActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        finish();
+        startActivity(intent);
     }
 
     private void loadQuestion(Question currentQuestion) {

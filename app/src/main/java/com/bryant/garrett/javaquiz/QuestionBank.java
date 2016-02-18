@@ -54,4 +54,8 @@ class QuestionBank {
     public int getCurrentQuestionIndex() {
         return currentQuestionIndex;
     }
+
+    public boolean onLastQuestion() {
+        return currentQuestionIndex == allQuestions.size() - 1;
+    }
 }
