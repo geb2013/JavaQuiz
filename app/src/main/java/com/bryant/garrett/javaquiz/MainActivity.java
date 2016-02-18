@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
             questionBank = new QuestionBank();
            startingQuestion = questionBank.getNextQuestion();
         }
-        
+
         loadQuestion(startingQuestion);
         setNavigationListeners();
     }
