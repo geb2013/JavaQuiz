@@ -33,11 +33,25 @@ class QuestionBank {
         return allQuestions.get(currentQuestionIndex);
     }
 
+    public Question getQuestionAt(int index) {
+        if (index < allQuestions.size() && index >= 0) {
+            currentQuestionIndex = index;
+        } else {
+            currentQuestionIndex = 0;
+        }
+
+        return allQuestions.get(currentQuestionIndex);
+    }
+
     public Question getPrevQuestion() {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
         }
 
         return allQuestions.get(currentQuestionIndex);
+    }
+
+    public int getCurrentQuestionIndex() {
+        return currentQuestionIndex;
     }
 }
