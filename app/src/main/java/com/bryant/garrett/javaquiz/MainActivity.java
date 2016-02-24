@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String QUESTION_INDEX_KEY = "questionIndex";
     private static final String GIVEN_ANSWERS_KEY = "givenAnswers";
     private static final String SCORE_KEY = "score";
+    private static final String PERFECT_SCORE_KEY = "isPerfectScore";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +109,10 @@ public class MainActivity extends AppCompatActivity {
     public void loadFinishedActivity() {
         Log.d(TAG, "loadFinishedActivity() called");
         Intent intent = new Intent(this, FinishActivity.class);
-        intent.putExtra(SCORE_KEY, questionBank.getScore());
+
+        intent.putExtra(SCORE_KEY, questionBank.getScoreText());
+        intent.putExtra(PERFECT_SCORE_KEY, questionBank.isPerfectScore());
+
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();
         startActivity(intent);

@@ -24,7 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/score_text" />
+        android:layout_above="@id/score_text"
+        android:gravity="center_horizontal" />
     <Button
         android:id="@+id/return_button"
         android:layout_width="wrap_content"

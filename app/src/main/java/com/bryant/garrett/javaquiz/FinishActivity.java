@@ -12,6 +12,7 @@ public class FinishActivity extends AppCompatActivity {
 
     private static final String TAG = "FinishActivity";
     private static final String SCORE_KEY = "score";
+    private static final String PERFECT_SCORE_KEY = "isPerfectScore";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +22,15 @@ public class FinishActivity extends AppCompatActivity {
 
         Intent myIntent = getIntent(); // gets the previously created intent
         String scoreText = myIntent.getStringExtra(SCORE_KEY);
+        boolean isPerfectScore = myIntent.getBooleanExtra(PERFECT_SCORE_KEY, false);
 
-        TextView mScoreTextView = (TextView) findViewById(R.id.score_text);
-        mScoreTextView.setText(scoreText);
+        ((TextView) findViewById(R.id.score_text)).setText(scoreText);
 
-        Button mReturnButton = (Button) findViewById(R.id.return_button);
-        mReturnButton.setOnClickListener(new View.OnClickListener() {
+        if (isPerfectScore) {
+            ((TextView) findViewById(R.id.complete_text)).setText("Congratulations!\nYou got:");
+        }
+
+        (findViewById(R.id.return_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 reloadQuiz();

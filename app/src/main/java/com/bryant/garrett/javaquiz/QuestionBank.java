@@ -90,14 +90,23 @@ class QuestionBank {
         }
     }
 
-    public String getScore() {
+    private int numberCorrect() {
         int correctQuestions = 0;
+
         for (int i = 0; i < allQuestions.size(); i++) {
             if (allQuestions.get(i).gaveCorrectAnswer()) {
                 correctQuestions++;
             }
         }
 
-        return correctQuestions + " out of " + allQuestions.size();
+        return correctQuestions;
+    }
+
+    public String getScoreText() {
+        return numberCorrect() + " out of " + allQuestions.size();
+    }
+    
+    public boolean isPerfectScore() {
+        return numberCorrect() == allQuestions.size() ;
     }
 }
