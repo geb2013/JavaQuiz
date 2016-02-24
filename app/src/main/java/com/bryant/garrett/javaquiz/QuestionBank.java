@@ -25,6 +25,10 @@ class QuestionBank {
         allQuestions.add(new Question(R.string.question4, false));
     }
 
+    public Question getCurrentQuestion() {
+        return allQuestions.get(currentQuestionIndex);
+    }
+
     public Question getNextQuestion() {
         if (currentQuestionIndex < allQuestions.size() - 1) {
             currentQuestionIndex++;
@@ -57,5 +61,43 @@ class QuestionBank {
 
     public boolean onLastQuestion() {
         return currentQuestionIndex == allQuestions.size() - 1;
+    }
+
+    public ArrayList<Integer> getGivenAnswers() {
+        ArrayList<Integer> givenAnswers = new ArrayList<>();
+
+        for (int i = 0; i < allQuestions.size(); i++) {
+            if (allQuestions.get(i).getGivenAnswer() == null) {
+                // Not answered yet
+                givenAnswers.add(0);
+            } else if (allQuestions.get(i).getGivenAnswer()) {
+                givenAnswers.add(1);
+            } else if (!allQuestions.get(i).getGivenAnswer()) {
+                givenAnswers.add(2);
+            }
+        }
+
+        return givenAnswers;
+    }
+
+    public void setGivenAnswers(ArrayList<Integer> givenAnswers) {
+        for (int i = 0; i < allQuestions.size(); i++) {
+            if (givenAnswers.get(i) == 1) {
+                allQuestions.get(i).setGivenAnswer(true);
+            } else if (givenAnswers.get(i) == 2) {
+                allQuestions.get(i).setGivenAnswer(false);
+            }
+        }
+    }
+
+    public String getScore() {
+        int correctQuestions = 0;
+        for (int i = 0; i < allQuestions.size(); i++) {
+            if (allQuestions.get(i).gaveCorrectAnswer()) {
+                correctQuestions++;
+            }
+        }
+
+        return correctQuestions + " out of " + allQuestions.size();
     }
 }

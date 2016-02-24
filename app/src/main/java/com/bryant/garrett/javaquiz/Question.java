@@ -12,8 +12,9 @@ public class Question {
     @StringRes
     private final int  questionResource;
     private final Boolean correctAnswer;
+    private Boolean givenAnswer;
 
-    Question(int question, Boolean answer) {
+    Question(int question, boolean answer) {
         questionResource = question;
         correctAnswer = answer;
     }
@@ -25,4 +26,10 @@ public class Question {
     public Boolean getCorrectAnswer() {
         return correctAnswer;
     }
+
+    public Boolean getGivenAnswer() { return givenAnswer; }
+
+    public void setGivenAnswer(boolean value) { givenAnswer = value; }
+
+    public Boolean gaveCorrectAnswer() { return correctAnswer == givenAnswer; }
 }

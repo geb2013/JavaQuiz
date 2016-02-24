@@ -6,16 +6,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class FinishActivity extends AppCompatActivity {
 
     private static final String TAG = "FinishActivity";
+    private static final String SCORE_KEY = "score";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called");
         setContentView(R.layout.activity_finish);
+
+        Intent myIntent = getIntent(); // gets the previously created intent
+        String scoreText = myIntent.getStringExtra(SCORE_KEY);
+
+        TextView mScoreTextView = (TextView) findViewById(R.id.score_text);
+        mScoreTextView.setText(scoreText);
 
         Button mReturnButton = (Button) findViewById(R.id.return_button);
         mReturnButton.setOnClickListener(new View.OnClickListener() {
@@ -33,7 +41,7 @@ public class FinishActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
-    
+
     @Override
     public void onDestroy() {
         super.onDestroy();

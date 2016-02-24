@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private QuestionBank questionBank;
     private static final String QUESTION_INDEX_KEY = "questionIndex";
+    private static final String GIVEN_ANSWERS_KEY = "givenAnswers";
+    private static final String SCORE_KEY = "score";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,11 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Initialize Question Bank
             questionBank = new QuestionBank();
-           startingQuestion = questionBank.getNextQuestion();
+            startingQuestion = questionBank.getNextQuestion();
+        }
+
+        if (savedInstanceState != null) {
+            questionBank.setGivenAnswers(savedInstanceState.getIntegerArrayList(GIVEN_ANSWERS_KEY));
         }
 
         loadQuestion(startingQuestion);
@@ -72,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onSaveInstanceState() called");
 
         outState.putInt(QUESTION_INDEX_KEY, questionBank.getCurrentQuestionIndex());
+        outState.putIntegerArrayList(GIVEN_ANSWERS_KEY, questionBank.getGivenAnswers());
     }
 
     private void setNavigationListeners() {
@@ -101,29 +108,26 @@ public class MainActivity extends AppCompatActivity {
     public void loadFinishedActivity() {
         Log.d(TAG, "loadFinishedActivity() called");
         Intent intent = new Intent(this, FinishActivity.class);
+        intent.putExtra(SCORE_KEY, questionBank.getScore());
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();
         startActivity(intent);
     }
 
     private void loadQuestion(Question currentQuestion) {
-        if (currentQuestion.getCorrectAnswer()) {
-            setTrueAnswerResponses();
-        } else {
-            setFalseAnswerResponses();
-        }
+        setOnClickHandlers();
 
         TextView mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mQuestionTextView.setText(currentQuestion.getQuestionText());
     }
 
-    private void setTrueAnswerResponses() {
+    private void setOnClickHandlers() {
         // Set the true button response
         Button mTrueButton = (Button) findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, R.string.correct_response, Toast.LENGTH_SHORT).show();
+                onClickEvent(true);
             }
         });
 
@@ -132,28 +136,19 @@ public class MainActivity extends AppCompatActivity {
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, R.string.wrong_response, Toast.LENGTH_SHORT).show();
+                onClickEvent(false);
             }
         });
     }
 
-    private void setFalseAnswerResponses() {
-        // Set the true button response
-        Button mTrueButton = (Button) findViewById(R.id.true_button);
-        mTrueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, R.string.wrong_response, Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void onClickEvent(boolean response) {
+        Question currentQuestion = questionBank.getCurrentQuestion();
+        currentQuestion.setGivenAnswer(response);
 
-        // Set the false button response
-        Button mFalseButton = (Button) findViewById(R.id.false_button);
-        mFalseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, R.string.correct_response, Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (currentQuestion.gaveCorrectAnswer()) {
+            Toast.makeText(MainActivity.this, R.string.correct_response, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this, R.string.wrong_response, Toast.LENGTH_SHORT).show();
+        }
     }
 }

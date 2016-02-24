@@ -10,18 +10,26 @@
     tools:context="com.bryant.garrett.javaquiz.FinishActivity">
 
     <TextView
-        android:id="@+id/complete_text"
-        android:text="All done!"
+        android:id="@+id/score_text"
+        android:text="0/0"
         android:textSize="32sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+    <TextView
+        android:id="@+id/complete_text"
+        android:text="Score:"
+        android:textSize="32sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/score_text" />
     <Button
         android:id="@+id/return_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/complete_text"
+        android:layout_below="@id/score_text"
         android:layout_centerHorizontal="true"
         android:text="Start Over"
         style="@style/Widget.AppCompat.Button.Colored" />
