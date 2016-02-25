@@ -91,7 +91,7 @@ class QuestionBank {
         }
     }
 
-    private int numberCorrect() {
+    public int getScore() {
         int correctQuestions = 0;
 
         for (int i = 0; i < allQuestions.size(); i++) {
@@ -102,12 +102,20 @@ class QuestionBank {
 
         return correctQuestions;
     }
-
-    public String getScoreText() {
-        return numberCorrect() + " out of " + allQuestions.size();
-    }
     
-    public boolean isPerfectScore() {
-        return numberCorrect() == allQuestions.size() ;
+    public int getPerfectScore() {
+        return allQuestions.size();
+    }
+
+    public int getCheatScore() {
+        int questionsCheated = 0;
+
+        for (int i = 0; i < allQuestions.size(); i++) {
+            if (allQuestions.get(i).getUsedCheat()) {
+                questionsCheated++;
+            }
+        }
+
+        return questionsCheated;
     }
 }

@@ -11,8 +11,6 @@ import org.w3c.dom.Text;
 
 public class CheatActivity extends AppCompatActivity {
     private static final String TAG = "CheatActivity";
-    private static final String CORRECT_ANSWER = "correctAnswer";
-    private static final String DISPLAYING_ANSWER = "displayingAnswer";
 
     private boolean correctAnswer;
     private boolean displayingCurrentAnswer = false;
@@ -24,9 +22,9 @@ public class CheatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cheat);
 
         Intent myIntent = getIntent(); // gets the previously created intent
-        correctAnswer = myIntent.getBooleanExtra(CORRECT_ANSWER, false);
+        correctAnswer = myIntent.getBooleanExtra(ConstantValues.CORRECT_ANSWER_KEY, false);
 
-        if (savedInstanceState != null && savedInstanceState.getBoolean(DISPLAYING_ANSWER)) {
+        if (savedInstanceState != null && savedInstanceState.getBoolean(ConstantValues.SHOWN_ANSWER_KEY)) {
             displayAnswer();
         } else {
             (findViewById(R.id.show_answer_button)).setOnClickListener(new View.OnClickListener() {
@@ -52,7 +50,7 @@ public class CheatActivity extends AppCompatActivity {
 
     private void setAnswerShownResult() {
         Intent data = new Intent();
-        data.putExtra(DISPLAYING_ANSWER, displayingCurrentAnswer);
+        data.putExtra(ConstantValues.SHOWN_ANSWER_KEY, displayingCurrentAnswer);
         setResult(RESULT_OK, data);
     }
 
@@ -61,7 +59,7 @@ public class CheatActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState() called");
 
-        outState.putBoolean(DISPLAYING_ANSWER, displayingCurrentAnswer);
+        outState.putBoolean(ConstantValues.SHOWN_ANSWER_KEY, displayingCurrentAnswer);
     }
 
     @Override

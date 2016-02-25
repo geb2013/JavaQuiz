@@ -14,13 +14,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private QuestionBank questionBank;
-    private static final String QUESTION_INDEX_KEY = "questionIndex";
-    private static final String GIVEN_ANSWERS_KEY = "givenAnswers";
-    private static final String SCORE_KEY = "score";
-    private static final String PERFECT_SCORE_KEY = "isPerfectScore";
-    private static final String CORRECT_ANSWER = "correctAnswer";
-    private static final String DISPLAYING_ANSWER = "displayingAnswer";
-    private static final int REQUEST_CODE_CHEAT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +22,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Question startingQuestion;
-        if (savedInstanceState != null && savedInstanceState.getInt(QUESTION_INDEX_KEY) > 0) {
+        if (savedInstanceState != null && savedInstanceState.getInt(ConstantValues.QUESTION_INDEX_KEY) > 0) {
             // Re-init Question Bank
             questionBank = new QuestionBank();
-            startingQuestion = questionBank.getQuestionAt(savedInstanceState.getInt(QUESTION_INDEX_KEY));
+            startingQuestion = questionBank.getQuestionAt(savedInstanceState.getInt(ConstantValues.QUESTION_INDEX_KEY));
         } else {
             // Initialize Question Bank
             questionBank = new QuestionBank();
@@ -40,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState != null) {
-            questionBank.setGivenAnswers(savedInstanceState.getIntegerArrayList(GIVEN_ANSWERS_KEY));
+            questionBank.setGivenAnswers(savedInstanceState.getIntegerArrayList(ConstantValues.GIVEN_ANSWERS_KEY));
         }
 
         loadQuestion(startingQuestion);
@@ -82,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState() called");
 
-        outState.putInt(QUESTION_INDEX_KEY, questionBank.getCurrentQuestionIndex());
-        outState.putIntegerArrayList(GIVEN_ANSWERS_KEY, questionBank.getGivenAnswers());
+        outState.putInt(ConstantValues.QUESTION_INDEX_KEY, questionBank.getCurrentQuestionIndex());
+        outState.putIntegerArrayList(ConstantValues.GIVEN_ANSWERS_KEY, questionBank.getGivenAnswers());
     }
 
     private void setNavigationListeners() {
@@ -120,8 +113,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "loadFinishedActivity() called");
         Intent intent = new Intent(this, FinishActivity.class);
 
-        intent.putExtra(SCORE_KEY, questionBank.getScoreText());
-        intent.putExtra(PERFECT_SCORE_KEY, questionBank.isPerfectScore());
+        intent.putExtra(ConstantValues.SCORE_KEY, questionBank.getScore());
+        intent.putExtra(ConstantValues.TOTAL_SCORE_KEY, questionBank.getPerfectScore());
+        intent.putExtra(ConstantValues.CHEAT_SCORE_KEY, questionBank.getCheatScore());
 
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();
@@ -133,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CheatActivity.class);
 
         Question currentQuestion = questionBank.getCurrentQuestion();
-        intent.putExtra(CORRECT_ANSWER, currentQuestion.getCorrectAnswer());
+        intent.putExtra(ConstantValues.CORRECT_ANSWER_KEY, currentQuestion.getCorrectAnswer());
 
-        startActivityForResult(intent, REQUEST_CODE_CHEAT);
+        startActivityForResult(intent, ConstantValues.REQUEST_CODE_CHEAT);
     }
 
     @Override
@@ -143,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (requestCode == REQUEST_CODE_CHEAT &&
-                data != null && data.getBooleanExtra(DISPLAYING_ANSWER, false)) {
+        if (requestCode == ConstantValues.REQUEST_CODE_CHEAT &&
+                data != null && data.getBooleanExtra(ConstantValues.SHOWN_ANSWER_KEY, false)) {
             questionBank.getCurrentQuestion().setUsedCheat();
         }
     }

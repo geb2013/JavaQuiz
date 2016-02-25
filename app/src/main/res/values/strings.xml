@@ -6,7 +6,6 @@
     <string name="question3">Apple created Microsoft Office.</string>
     <string name="question4">Android is the name of any phone with a front-facing camera.</string>
 
-    <string name="warning_text">Are you sure you want to do this?</string>
 
     <string name="correct_response">Correct!</string>
     <string name="wrong_response">Incorrect, try again.</string>
@@ -17,5 +16,13 @@
     <string name="button_false">False</string>
     <string name="button_previous">Prev</string>
     <string name="button_next">Next</string>
+
+    <string name="text_score">Score:</string>
+    <string name="text_congratulations_score">Congratulations!\nYou got:</string>
+    <string name="text_cheater_score">You cheated to get:</string>
+    <string name="button_start_over">Start Over</string>
+
+    <string name="text_warning">Are you sure you want to do this?</string>
     <string name="button_cheat">Cheat!</string>
+    <string name="button_show_answer">Show Answer</string>
 </resources>

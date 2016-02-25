@@ -11,8 +11,6 @@ import android.widget.TextView;
 public class FinishActivity extends AppCompatActivity {
 
     private static final String TAG = "FinishActivity";
-    private static final String SCORE_KEY = "score";
-    private static final String PERFECT_SCORE_KEY = "isPerfectScore";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,14 +19,9 @@ public class FinishActivity extends AppCompatActivity {
         setContentView(R.layout.activity_finish);
 
         Intent myIntent = getIntent(); // gets the previously created intent
-        String scoreText = myIntent.getStringExtra(SCORE_KEY);
-        boolean isPerfectScore = myIntent.getBooleanExtra(PERFECT_SCORE_KEY, false);
-
-        ((TextView) findViewById(R.id.score_text)).setText(scoreText);
-
-        if (isPerfectScore) {
-            ((TextView) findViewById(R.id.complete_text)).setText("Congratulations!\nYou got:");
-        }
+        setScoreText(myIntent.getIntExtra(ConstantValues.SCORE_KEY, 0),
+                myIntent.getIntExtra(ConstantValues.TOTAL_SCORE_KEY, 0),
+                myIntent.getIntExtra(ConstantValues.CHEAT_SCORE_KEY, 0));
 
         (findViewById(R.id.return_button)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +29,22 @@ public class FinishActivity extends AppCompatActivity {
                 reloadQuiz();
             }
         });
+    }
+
+    private void setScoreText(int score, int totalScore, int cheatedScore) {
+        TextView scoreTextView = (TextView) findViewById(R.id.score_text);
+        TextView completeTextView = (TextView) findViewById(R.id.complete_text);
+
+        scoreTextView.setText(score + " out of " + totalScore);
+
+        if (cheatedScore > 0) {
+            completeTextView.setText(R.string.text_cheater_score);
+            scoreTextView.setText(score + " out of " + totalScore + "\n(Cheating on " + cheatedScore + ")");
+        } else if (score == totalScore) {
+            completeTextView.setText(R.string.text_congratulations_score);
+        } else {
+            completeTextView.setText(R.string.text_score);
+        }
     }
 
     public void reloadQuiz() {
