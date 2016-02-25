@@ -11,6 +11,7 @@ import java.util.ArrayList;
 class QuestionBank {
     private final ArrayList<Question> allQuestions;
     private int currentQuestionIndex;
+    public enum answerTypes { NOT_ANSWERED, CORRECT, INCORRECT }
 
     QuestionBank() {
         allQuestions = new ArrayList<>();

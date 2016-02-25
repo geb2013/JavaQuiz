@@ -1,5 +1,6 @@
 package com.bryant.garrett.javaquiz;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String GIVEN_ANSWERS_KEY = "givenAnswers";
     private static final String SCORE_KEY = "score";
     private static final String PERFECT_SCORE_KEY = "isPerfectScore";
+    private static final String CORRECT_ANSWER = "correctAnswer";
+    private static final String DISPLAYING_ANSWER = "displayingAnswer";
+    private static final int REQUEST_CODE_CHEAT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,18 +87,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setNavigationListeners() {
-        // Set the previous button response
-        Button mPrevButton = (Button) findViewById(R.id.prev_button);
-        mPrevButton.setOnClickListener(new View.OnClickListener() {
+        // Set the previous button
+        (findViewById(R.id.prev_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadQuestion(questionBank.getPrevQuestion());
             }
         });
 
-        // Set the next button response
-        Button mNextButton = (Button) findViewById(R.id.next_button);
-        mNextButton.setOnClickListener(new View.OnClickListener() {
+        // Set the next button
+        (findViewById(R.id.next_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (questionBank.onLastQuestion()) {
@@ -102,6 +104,14 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     loadQuestion(questionBank.getNextQuestion());
                 }
+            }
+        });
+
+        // Set the cheat button
+        (findViewById(R.id.cheat_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadCheatActivity();
             }
         });
     }
@@ -117,6 +127,28 @@ public class MainActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
+
+    public void loadCheatActivity() {
+        Log.d(TAG, "loadCheatActivity() called");
+        Intent intent = new Intent(this, CheatActivity.class);
+
+        Question currentQuestion = questionBank.getCurrentQuestion();
+        intent.putExtra(CORRECT_ANSWER, currentQuestion.getCorrectAnswer());
+
+        startActivityForResult(intent, REQUEST_CODE_CHEAT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_CHEAT &&
+                data != null && data.getBooleanExtra(DISPLAYING_ANSWER, false)) {
+            questionBank.getCurrentQuestion().setUsedCheat();
+        }
+    }
+
 
     private void loadQuestion(Question currentQuestion) {
         setOnClickHandlers();
@@ -149,7 +181,9 @@ public class MainActivity extends AppCompatActivity {
         Question currentQuestion = questionBank.getCurrentQuestion();
         currentQuestion.setGivenAnswer(response);
 
-        if (currentQuestion.gaveCorrectAnswer()) {
+        if (currentQuestion.getUsedCheat()) {
+            Toast.makeText(MainActivity.this, R.string.cheat_response, Toast.LENGTH_SHORT).show();
+        } else if (currentQuestion.gaveCorrectAnswer()) {
             Toast.makeText(MainActivity.this, R.string.correct_response, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(MainActivity.this, R.string.wrong_response, Toast.LENGTH_SHORT).show();

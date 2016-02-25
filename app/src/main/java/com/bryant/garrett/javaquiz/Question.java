@@ -13,6 +13,7 @@ public class Question {
     private final int  questionResource;
     private final Boolean correctAnswer;
     private Boolean givenAnswer;
+    private boolean usedCheat = false;
 
     Question(int question, boolean answer) {
         questionResource = question;
@@ -32,4 +33,8 @@ public class Question {
     public void setGivenAnswer(boolean value) { givenAnswer = value; }
 
     public Boolean gaveCorrectAnswer() { return correctAnswer == givenAnswer; }
+
+    public boolean getUsedCheat() { return usedCheat; }
+
+    public void setUsedCheat() { usedCheat = true; }
 }
