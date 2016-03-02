@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private QuestionBank questionBank;
+    private boolean justCheated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             questionBank.setGivenAnswers(savedInstanceState.getIntegerArrayList(ConstantValues.GIVEN_ANSWERS_KEY));
+            questionBank.setCheats(savedInstanceState.getBooleanArray(ConstantValues.ANSWERS_CHEATED));
+            justCheated = savedInstanceState.getBoolean(ConstantValues.JUST_CHEATED);
         }
 
         loadQuestion(startingQuestion);
-        setNavigationListeners();
+        setOnClickHandlers();
     }
 
     @Override
@@ -77,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
         outState.putInt(ConstantValues.QUESTION_INDEX_KEY, questionBank.getCurrentQuestionIndex());
         outState.putIntegerArrayList(ConstantValues.GIVEN_ANSWERS_KEY, questionBank.getGivenAnswers());
+        outState.putBooleanArray(ConstantValues.ANSWERS_CHEATED, questionBank.getCheats());
+        outState.putBoolean(ConstantValues.JUST_CHEATED, justCheated);
     }
 
     private void setNavigationListeners() {
@@ -85,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadQuestion(questionBank.getPrevQuestion());
+                justCheated = false;
             }
         });
 
@@ -93,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadQuestion(questionBank.getNextQuestion());
+                justCheated = false;
             }
         });
 
@@ -111,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
                 loadScoreActivity();
             }
         });
+
+        // Enable/disable prev/next buttons if needed
+        refreshNavigationControls();
     }
 
     public void loadScoreActivity() {
@@ -121,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(ConstantValues.TOTAL_SCORE_KEY, questionBank.getPerfectScore());
         intent.putExtra(ConstantValues.CHEAT_SCORE_KEY, questionBank.getCheatScore());
 
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
@@ -139,18 +150,28 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
+
         if (requestCode == ConstantValues.REQUEST_CODE_CHEAT &&
-                data != null && data.getBooleanExtra(ConstantValues.SHOWN_ANSWER_KEY, false)) {
+                data != null && data.getBooleanExtra(ConstantValues.SHOWN_ANSWER_KEY, false) &&
+                !questionBank.getCurrentQuestion().gaveCorrectAnswer()) {
+            // Mark the question as cheated if the cheat activity returns saying that the
+            // answer was shown and that question was not previously answered correctly.
             questionBank.getCurrentQuestion().setUsedCheat();
+            justCheated = true;
         }
     }
 
 
     private void loadQuestion(Question currentQuestion) {
-        setOnClickHandlers();
-
         TextView mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mQuestionTextView.setText(currentQuestion.getQuestionText());
+
+        refreshNavigationControls();
+    }
+
+    private void refreshNavigationControls() {
+        (findViewById(R.id.next_button)).setEnabled(!questionBank.onLastQuestion());
+        (findViewById(R.id.prev_button)).setEnabled(!questionBank.onFirstQuestion());
     }
 
     private void setOnClickHandlers() {
@@ -171,18 +192,23 @@ public class MainActivity extends AppCompatActivity {
                 onClickEvent(false);
             }
         });
+
+        setNavigationListeners();
     }
 
     public void onClickEvent(boolean response) {
         Question currentQuestion = questionBank.getCurrentQuestion();
-        currentQuestion.setGivenAnswer(response);
 
-        if (currentQuestion.getUsedCheat()) {
+        if (justCheated) {
             Toast.makeText(MainActivity.this, R.string.cheat_response, Toast.LENGTH_SHORT).show();
-        } else if (currentQuestion.gaveCorrectAnswer()) {
-            Toast.makeText(MainActivity.this, R.string.correct_response, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(MainActivity.this, R.string.wrong_response, Toast.LENGTH_SHORT).show();
+            currentQuestion.setGivenAnswer(response);
+
+            if (currentQuestion.gaveCorrectAnswer()) {
+                Toast.makeText(MainActivity.this, R.string.correct_response, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, R.string.wrong_response, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

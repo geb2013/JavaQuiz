@@ -9,6 +9,8 @@ public class ConstantValues {
     public static final String CHEAT_SCORE_KEY = "cheatedScore";
     public static final String CORRECT_ANSWER_KEY = "correctAnswer";
     public static final String SHOWN_ANSWER_KEY = "shownAnswer";
+    public static final String ANSWERS_CHEATED = "answersCheated";
+    public static final String JUST_CHEATED = "justCheated";
 
     // Request keys
     public static final int REQUEST_CODE_CHEAT = 0;

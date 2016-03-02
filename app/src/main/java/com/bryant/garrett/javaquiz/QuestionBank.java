@@ -64,6 +64,10 @@ class QuestionBank {
         return currentQuestionIndex == allQuestions.size() - 1;
     }
 
+    public boolean onFirstQuestion() {
+        return currentQuestionIndex == 0;
+    }
+
     public ArrayList<Integer> getGivenAnswers() {
         ArrayList<Integer> givenAnswers = new ArrayList<>();
 
@@ -117,5 +121,29 @@ class QuestionBank {
         }
 
         return questionsCheated;
+    }
+
+    public boolean[] getCheats()
+    {
+        boolean[] questionsCheated = new boolean[allQuestions.size()];
+
+        for (int i = 0; i < allQuestions.size(); i++) {
+            questionsCheated[i] = allQuestions.get(i).getUsedCheat();
+        }
+
+        return questionsCheated;
+    }
+
+    public void setCheats(boolean[] questionsCheated)
+    {
+        for (int i = 0; i < allQuestions.size(); i++) {
+            if (i < questionsCheated.length) {
+                if (questionsCheated[i]) {
+                    allQuestions.get(i).setUsedCheat();
+                }
+            } else {
+                break;
+            }
+        }
     }
 }
