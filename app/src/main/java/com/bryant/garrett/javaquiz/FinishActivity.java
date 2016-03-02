@@ -29,6 +29,13 @@ public class FinishActivity extends AppCompatActivity {
                 endActivity();
             }
         });
+
+        (findViewById(R.id.restart_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reloadQuiz();
+            }
+        });
     }
 
     private void setScoreText(int score, int totalScore, int cheatedScore) {
@@ -50,6 +57,16 @@ public class FinishActivity extends AppCompatActivity {
     public void endActivity() {
         Log.d(TAG, "endActivity() called");
         finish();
+    }
+
+    public void reloadQuiz() {
+        Log.d(TAG, "reloadQuiz() called");
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        finish();
+        startActivity(intent);
     }
 
     @Override

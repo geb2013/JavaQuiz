@@ -11,7 +11,7 @@ import java.util.ArrayList;
 class QuestionBank {
     private final ArrayList<Question> allQuestions;
     private int currentQuestionIndex;
-    public enum answerTypes { NOT_ANSWERED, CORRECT, INCORRECT }
+    public enum answerTypes { NOT_ANSWERED, TRUE, FALSE }
 
     QuestionBank() {
         allQuestions = new ArrayList<>();
@@ -21,9 +21,13 @@ class QuestionBank {
 
     private void generateAllQuestions() {
         allQuestions.add(new Question(R.string.question1, true));
-        allQuestions.add(new Question(R.string.question2, true));
+        allQuestions.add(new Question(R.string.question2, false));
         allQuestions.add(new Question(R.string.question3, false));
         allQuestions.add(new Question(R.string.question4, false));
+        allQuestions.add(new Question(R.string.question5, true));
+        allQuestions.add(new Question(R.string.question6, false));
+        allQuestions.add(new Question(R.string.question7, true));
+        allQuestions.add(new Question(R.string.question8, true));
     }
 
     public Question getCurrentQuestion() {
@@ -74,11 +78,11 @@ class QuestionBank {
         for (int i = 0; i < allQuestions.size(); i++) {
             if (allQuestions.get(i).getGivenAnswer() == null) {
                 // Not answered yet
-                givenAnswers.add(0);
+                givenAnswers.add(answerTypes.NOT_ANSWERED.ordinal());
             } else if (allQuestions.get(i).getGivenAnswer()) {
-                givenAnswers.add(1);
+                givenAnswers.add(answerTypes.TRUE.ordinal());
             } else if (!allQuestions.get(i).getGivenAnswer()) {
-                givenAnswers.add(2);
+                givenAnswers.add(answerTypes.FALSE.ordinal());
             }
         }
 
@@ -87,9 +91,9 @@ class QuestionBank {
 
     public void setGivenAnswers(ArrayList<Integer> givenAnswers) {
         for (int i = 0; i < allQuestions.size(); i++) {
-            if (givenAnswers.get(i) == 1) {
+            if (givenAnswers.get(i) == answerTypes.TRUE.ordinal()) {
                 allQuestions.get(i).setGivenAnswer(true);
-            } else if (givenAnswers.get(i) == 2) {
+            } else if (givenAnswers.get(i) == answerTypes.FALSE.ordinal()) {
                 allQuestions.get(i).setGivenAnswer(false);
             }
         }

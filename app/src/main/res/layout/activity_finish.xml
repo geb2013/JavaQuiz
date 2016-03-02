@@ -12,7 +12,7 @@
     <TextView
         android:id="@+id/score_text"
         android:textSize="32sp"
-        android:layout_width="wrap_content"
+        android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -33,6 +33,14 @@
         android:layout_below="@id/score_text"
         android:layout_centerHorizontal="true"
         android:text="@string/button_return"
+        style="@style/Widget.AppCompat.Button.Colored" />
+    <Button
+        android:id="@+id/restart_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/return_button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/button_restart"
         style="@style/Widget.AppCompat.Button.Colored" />
 
 </RelativeLayout>

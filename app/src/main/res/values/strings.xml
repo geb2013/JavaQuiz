@@ -2,9 +2,13 @@
     <string name="app_name">JavaQuiz</string>
 
     <string name="question1">Java is an object oriented programming language.</string>
-    <string name="question2">Windows is an operating system.</string>
-    <string name="question3">Apple created Microsoft Office.</string>
-    <string name="question4">Android is the name of any phone with a front-facing camera.</string>
+    <string name="question2">Windows is the only operating system that can run Java.</string>
+    <string name="question3">Apple created Java.</string>
+    <string name="question4">It is always good practice to use public static variables.</string>
+    <string name="question5">An int is a primitive type.</string>
+    <string name="question6">A class is an instance of an object.</string>
+    <string name="question7">String is not a primitive type.</string>
+    <string name="question8">Java programming is fun!</string>
 
 
     <string name="correct_response">Correct!</string>
@@ -22,6 +26,7 @@
     <string name="text_congratulations_score">Congratulations!\nYou got:</string>
     <string name="text_cheater_score">You cheated to get:</string>
     <string name="button_return">Return to quiz</string>
+    <string name="button_restart">Restart the quiz</string>
 
     <string name="text_warning">Are you sure you want to do this?</string>
     <string name="button_cheat">Cheat!</string>
