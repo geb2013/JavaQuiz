@@ -26,7 +26,7 @@ public class FinishActivity extends AppCompatActivity {
         (findViewById(R.id.return_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reloadQuiz();
+                endActivity();
             }
         });
     }
@@ -47,12 +47,9 @@ public class FinishActivity extends AppCompatActivity {
         }
     }
 
-    public void reloadQuiz() {
-        Log.d(TAG, "reloadQuiz() called");
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    public void endActivity() {
+        Log.d(TAG, "endActivity() called");
         finish();
-        startActivity(intent);
     }
 
     @Override

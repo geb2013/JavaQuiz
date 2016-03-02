@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/score_text"
         android:layout_centerHorizontal="true"
-        android:text="@string/button_start_over"
+        android:text="@string/button_return"
         style="@style/Widget.AppCompat.Button.Colored" />
 
 </RelativeLayout>

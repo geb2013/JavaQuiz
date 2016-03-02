@@ -92,11 +92,7 @@ public class MainActivity extends AppCompatActivity {
         (findViewById(R.id.next_button)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (questionBank.onLastQuestion()) {
-                    loadFinishedActivity();
-                } else {
-                    loadQuestion(questionBank.getNextQuestion());
-                }
+                loadQuestion(questionBank.getNextQuestion());
             }
         });
 
@@ -107,18 +103,24 @@ public class MainActivity extends AppCompatActivity {
                 loadCheatActivity();
             }
         });
+
+        // Set the cheat button
+        (findViewById(R.id.view_score_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadScoreActivity();
+            }
+        });
     }
 
-    public void loadFinishedActivity() {
-        Log.d(TAG, "loadFinishedActivity() called");
+    public void loadScoreActivity() {
+        Log.d(TAG, "loadScoreActivity() called");
         Intent intent = new Intent(this, FinishActivity.class);
 
         intent.putExtra(ConstantValues.SCORE_KEY, questionBank.getScore());
         intent.putExtra(ConstantValues.TOTAL_SCORE_KEY, questionBank.getPerfectScore());
         intent.putExtra(ConstantValues.CHEAT_SCORE_KEY, questionBank.getCheatScore());
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        finish();
         startActivity(intent);
     }
 
